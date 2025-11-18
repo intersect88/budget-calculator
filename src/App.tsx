@@ -145,11 +145,11 @@ const App: React.FC = () => {
   }, [expensePercentage]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-3 sm:p-6">
       <div className="max-w-4xl mx-auto">
         {/* Guest user banner */}
         {isGuest && (
-          <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4 mb-6 flex items-center justify-between">
+          <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0" />
               <div>
@@ -163,7 +163,7 @@ const App: React.FC = () => {
             </div>
             <button
               onClick={handleCreateAccount}
-              className="flex items-center gap-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition whitespace-nowrap flex-shrink-0"
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition whitespace-nowrap w-full sm:w-auto"
             >
               <UserPlus className="w-4 h-4" />
               Create Account
@@ -171,32 +171,32 @@ const App: React.FC = () => {
           </div>
         )}
 
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <Wallet className="w-8 h-8 text-indigo-600" />
-              <h1 className="text-3xl font-bold text-gray-800">Monthly Budget Manager</h1>
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-8 mb-4 sm:mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Wallet className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" />
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">Monthly Budget Manager</h1>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
               {!isGuest && (
-                <div className="text-right">
+                <div className="text-right hidden sm:block">
                   <p className="text-sm text-gray-600">Welcome</p>
                   <p className="text-sm font-semibold text-gray-800">{user?.email}</p>
                 </div>
               )}
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
+                className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition text-sm sm:text-base w-full sm:w-auto"
                 title={isGuest ? "Exit guest mode" : "Logout"}
               >
                 <LogOut className="w-4 h-4" />
-                Logout
+                <span className="sm:inline">Logout</span>
               </button>
             </div>
           </div>
 
           {/* Net Salary */}
-          <div className="mb-8 p-6 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl">
+          <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Monthly Net Salary (€)
             </label>
@@ -211,11 +211,11 @@ const App: React.FC = () => {
 
           {/* Fixed Expenses */}
           <div className="mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-800">Fixed Monthly Expenses</h2>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800">Fixed Monthly Expenses</h2>
               <button
                 onClick={addExpense}
-                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm sm:text-base w-full sm:w-auto"
               >
                 <Plus className="w-4 h-4" />
                 Add Expense
@@ -224,27 +224,29 @@ const App: React.FC = () => {
 
             <div className="space-y-3">
               {expenses.map((expense) => (
-                <div key={expense.id} className="flex gap-3 items-center">
+                <div key={expense.id} className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <input
                     type="text"
                     value={expense.category}
                     onChange={(e) => updateExpense(expense.id, 'category', e.target.value)}
                     placeholder="Category (e.g., Netflix)"
-                    className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-400 transition"
+                    className="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-400 transition"
                   />
-                  <input
-                    type="number"
-                    value={expense.amount}
-                    onChange={(e) => updateExpense(expense.id, 'amount', e.target.value)}
-                    placeholder="€"
-                    className="w-32 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-400 transition"
-                  />
-                  <button
-                    onClick={() => removeExpense(expense.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      value={expense.amount}
+                      onChange={(e) => updateExpense(expense.id, 'amount', e.target.value)}
+                      placeholder="€"
+                      className="flex-1 sm:w-32 px-3 sm:px-4 py-2 text-sm sm:text-base border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-400 transition"
+                    />
+                    <button
+                      onClick={() => removeExpense(expense.id)}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition flex-shrink-0"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -252,11 +254,11 @@ const App: React.FC = () => {
 
           {/* Additional Income */}
           <div className="mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-800">Additional Income</h2>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800">Additional Income</h2>
               <button
                 onClick={addIncome}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm sm:text-base w-full sm:w-auto"
               >
                 <PiggyBank className="w-4 h-4" />
                 Add Income
@@ -265,38 +267,40 @@ const App: React.FC = () => {
 
             <div className="space-y-3">
               {incomes.map((income) => (
-                <div key={income.id} className="flex gap-3 items-center">
+                <div key={income.id} className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <input
                     type="text"
                     value={income.category}
                     onChange={(e) => updateIncome(income.id, 'category', e.target.value)}
                     placeholder="Category (e.g., Freelance)"
-                    className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-400 transition"
+                    className="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-400 transition"
                   />
-                  <input
-                    type="number"
-                    value={income.amount}
-                    onChange={(e) => updateIncome(income.id, 'amount', e.target.value)}
-                    placeholder="€"
-                    className="w-32 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-400 transition"
-                  />
-                  <button
-                    onClick={() => removeIncome(income.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      value={income.amount}
+                      onChange={(e) => updateIncome(income.id, 'amount', e.target.value)}
+                      placeholder="€"
+                      className="flex-1 sm:w-32 px-3 sm:px-4 py-2 text-sm sm:text-base border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-400 transition"
+                    />
+                    <button
+                      onClick={() => removeIncome(income.id)}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition flex-shrink-0"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Summary */}
-          <div className="mt-8 space-y-4">
-            <div className="p-6 bg-green-50 rounded-xl border-2 border-green-200">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-600 font-medium">Total Income:</span>
-                <span className="text-2xl font-bold text-green-600">
+          <div className="mt-6 sm:mt-8 space-y-4">
+            <div className="p-4 sm:p-6 bg-green-50 rounded-xl border-2 border-green-200">
+              <div className="flex justify-between items-center mb-2 gap-2">
+                <span className="text-sm sm:text-base text-gray-600 font-medium">Total Income:</span>
+                <span className="text-xl sm:text-2xl font-bold text-green-600">
                   €{totalIncome.toFixed(2)}
                 </span>
               </div>
@@ -308,10 +312,10 @@ const App: React.FC = () => {
               )}
             </div>
 
-            <div className="p-6 bg-gray-50 rounded-xl">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-600 font-medium">Total Fixed Expenses:</span>
-                <span className="text-2xl font-bold text-red-600">
+            <div className="p-4 sm:p-6 bg-gray-50 rounded-xl">
+              <div className="flex justify-between items-center mb-2 gap-2">
+                <span className="text-sm sm:text-base text-gray-600 font-medium">Total Fixed Expenses:</span>
+                <span className="text-xl sm:text-2xl font-bold text-red-600">
                   €{totalExpenses.toFixed(2)}
                 </span>
               </div>
@@ -331,18 +335,18 @@ const App: React.FC = () => {
               )}
             </div>
 
-            <div className={`p-6 rounded-xl ${
+            <div className={`p-4 sm:p-6 rounded-xl ${
               availableMoney >= 0 
                 ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200' 
                 : 'bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200'
             }`}>
-              <div className="flex items-center gap-3 mb-2">
-                <TrendingUp className={`w-6 h-6 ${availableMoney >= 0 ? 'text-green-600' : 'text-red-600'}`} />
-                <span className="text-gray-700 font-semibold text-lg">
+              <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                <TrendingUp className={`w-5 h-5 sm:w-6 sm:h-6 ${availableMoney >= 0 ? 'text-green-600' : 'text-red-600'}`} />
+                <span className="text-gray-700 font-semibold text-sm sm:text-base md:text-lg">
                   Available Money (unallocated):
                 </span>
               </div>
-              <div className={`text-4xl font-bold ${availableMoney >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+              <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${availableMoney >= 0 ? 'text-green-700' : 'text-red-700'}`}>
                 €{availableMoney.toFixed(2)}
               </div>
               
@@ -370,8 +374,8 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-6 text-sm text-gray-600">
-          <h3 className="font-semibold text-gray-800 mb-2">📊 Percentage Guide:</h3>
+        <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 text-xs sm:text-sm text-gray-600">
+          <h3 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">📊 Percentage Guide:</h3>
           <ul className="space-y-1">
             <li>• <span className="text-green-600 font-medium">Up to 50%</span> - Excellent expense management</li>
             <li>• <span className="text-yellow-600 font-medium">50-70%</span> - Good management, but be careful</li>
