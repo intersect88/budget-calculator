@@ -46,7 +46,6 @@ const App: React.FC = () => {
     { id: 1, category: 'Freelance', amount: '' },
     { id: 2, category: 'Affitti', amount: '' }
   ]));
-  const [showLoginPrompt] = useState<boolean>(false);
 
   const handleLogout = async (): Promise<void> => {
     try {
