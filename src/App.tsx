@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { Plus, Trash2, Wallet, TrendingUp, AlertCircle, PiggyBank, LogOut, UserPlus } from 'lucide-react';
+import { Plus, Trash2, Wallet, TrendingUp, AlertCircle, PiggyBank, LogOut, UserPlus, Languages } from 'lucide-react';
 import { useAuth } from './AuthContext';
+import { useLanguage } from './LanguageContext';
 
 interface Expense {
   id: number;
@@ -35,17 +36,31 @@ const saveToStorage = <T,>(key: string, value: T): void => {
 
 const App: React.FC = () => {
   const { user, isGuest, logout, exitGuestMode } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
+  
+  const getDefaultExpenses = useCallback((): Expense[] => {
+    return t.defaultExpenses.map((exp, index) => ({
+      id: index + 1,
+      category: exp.category,
+      amount: ''
+    }));
+  }, [t.defaultExpenses]);
+  
+  const getDefaultIncomes = useCallback((): Income[] => {
+    return t.defaultIncomes.map((inc, index) => ({
+      id: index + 1,
+      category: inc.category,
+      amount: ''
+    }));
+  }, [t.defaultIncomes]);
+  
   const [netSalary, setNetSalary] = useState<string>(() => loadFromStorage<string>('netSalary', ''));
-  const [expenses, setExpenses] = useState<Expense[]>(() => loadFromStorage<Expense[]>('expenses', [
-    { id: 1, category: 'Rent/Mortgage', amount: '' },
-    { id: 2, category: 'Utilities', amount: '' },
-    { id: 3, category: 'Transportation', amount: '' },
-    { id: 4, category: 'Groceries', amount: '' }
-  ]));
-  const [incomes, setIncomes] = useState<Income[]>(() => loadFromStorage<Income[]>('incomes', [
-    { id: 1, category: 'Freelance', amount: '' },
-    { id: 2, category: 'Rental Income', amount: '' }
-  ]));
+  const [expenses, setExpenses] = useState<Expense[]>(() => 
+    loadFromStorage<Expense[]>('expenses', getDefaultExpenses())
+  );
+  const [incomes, setIncomes] = useState<Income[]>(() => 
+    loadFromStorage<Income[]>('incomes', getDefaultIncomes())
+  );
 
   const handleLogout = async (): Promise<void> => {
     try {
@@ -154,10 +169,10 @@ const App: React.FC = () => {
               <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0" />
               <div>
                 <p className="text-sm font-semibold text-yellow-900">
-                  You're using guest mode
+                  {t.guestMode}
                 </p>
                 <p className="text-xs text-yellow-700">
-                  Your data is only saved on this browser. Create an account to sync across all your devices.
+                  {t.guestModeDesc}
                 </p>
               </div>
             </div>
@@ -166,7 +181,7 @@ const App: React.FC = () => {
               className="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition whitespace-nowrap w-full sm:w-auto"
             >
               <UserPlus className="w-4 h-4" />
-              Create Account
+              {t.createAccount}
             </button>
           </div>
         )}
@@ -175,22 +190,30 @@ const App: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-2 sm:gap-3">
               <Wallet className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" />
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">Monthly Budget Manager</h1>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">{t.appTitle}</h1>
             </div>
             <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+              <button
+                onClick={() => setLanguage(language === 'en' ? 'it' : 'en')}
+                className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition text-sm sm:text-base"
+                title={language === 'en' ? 'Switch to Italian' : 'Passa all\'inglese'}
+              >
+                <Languages className="w-4 h-4" />
+                <span className="hidden sm:inline">{language === 'en' ? 'IT' : 'EN'}</span>
+              </button>
               {!isGuest && (
                 <div className="text-right hidden sm:block">
-                  <p className="text-sm text-gray-600">Welcome</p>
+                  <p className="text-sm text-gray-600">{t.welcome}</p>
                   <p className="text-sm font-semibold text-gray-800">{user?.email}</p>
                 </div>
               )}
               <button
                 onClick={handleLogout}
                 className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition text-sm sm:text-base w-full sm:w-auto"
-                title={isGuest ? "Exit guest mode" : "Logout"}
+                title={isGuest ? t.exitGuestMode : t.logout}
               >
                 <LogOut className="w-4 h-4" />
-                <span className="sm:inline">Logout</span>
+                <span className="sm:inline">{t.logout}</span>
               </button>
             </div>
           </div>
@@ -198,13 +221,13 @@ const App: React.FC = () => {
           {/* Net Salary */}
           <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Monthly Net Salary (€)
+              {t.netSalary}
             </label>
             <input
               type="number"
               value={netSalary}
               onChange={(e) => setNetSalary(e.target.value)}
-              placeholder="e.g., 1500"
+              placeholder={t.salaryPlaceholder}
               className="w-full px-4 py-3 text-lg border-2 border-indigo-200 rounded-lg focus:outline-none focus:border-indigo-500 transition"
             />
           </div>
@@ -212,13 +235,13 @@ const App: React.FC = () => {
           {/* Fixed Expenses */}
           <div className="mb-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-800">Fixed Monthly Expenses</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800">{t.fixedExpenses}</h2>
               <button
                 onClick={addExpense}
                 className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm sm:text-base w-full sm:w-auto"
               >
                 <Plus className="w-4 h-4" />
-                Add Expense
+                {t.addExpense}
               </button>
             </div>
 
@@ -229,7 +252,7 @@ const App: React.FC = () => {
                     type="text"
                     value={expense.category}
                     onChange={(e) => updateExpense(expense.id, 'category', e.target.value)}
-                    placeholder="Category (e.g., Netflix)"
+                    placeholder={t.expenseCategoryPlaceholder}
                     className="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-400 transition"
                   />
                   <div className="flex gap-2">
@@ -255,13 +278,13 @@ const App: React.FC = () => {
           {/* Additional Income */}
           <div className="mb-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-800">Additional Income</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800">{t.additionalIncome}</h2>
               <button
                 onClick={addIncome}
                 className="flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm sm:text-base w-full sm:w-auto"
               >
                 <PiggyBank className="w-4 h-4" />
-                Add Income
+                {t.addIncome}
               </button>
             </div>
 
@@ -272,7 +295,7 @@ const App: React.FC = () => {
                     type="text"
                     value={income.category}
                     onChange={(e) => updateIncome(income.id, 'category', e.target.value)}
-                    placeholder="Category (e.g., Freelance)"
+                    placeholder={t.incomeCategoryPlaceholder}
                     className="flex-1 px-3 sm:px-4 py-2 text-sm sm:text-base border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-400 transition"
                   />
                   <div className="flex gap-2">
@@ -299,22 +322,22 @@ const App: React.FC = () => {
           <div className="mt-6 sm:mt-8 space-y-4">
             <div className="p-4 sm:p-6 bg-green-50 rounded-xl border-2 border-green-200">
               <div className="flex justify-between items-center mb-2 gap-2">
-                <span className="text-sm sm:text-base text-gray-600 font-medium">Total Income:</span>
+                <span className="text-sm sm:text-base text-gray-600 font-medium">{t.totalIncome}</span>
                 <span className="text-xl sm:text-2xl font-bold text-green-600">
                   €{totalIncome.toFixed(2)}
                 </span>
               </div>
               {totalIncomes > 0 && (
                 <div className="mt-2 text-sm text-gray-600">
-                  <p>Salary: €{netSalaryValue.toFixed(2)}</p>
-                  <p>Additional income: €{totalIncomes.toFixed(2)}</p>
+                  <p>{t.salary}: €{netSalaryValue.toFixed(2)}</p>
+                  <p>{t.additionalIncomeLabel}: €{totalIncomes.toFixed(2)}</p>
                 </div>
               )}
             </div>
 
             <div className="p-4 sm:p-6 bg-gray-50 rounded-xl">
               <div className="flex justify-between items-center mb-2 gap-2">
-                <span className="text-sm sm:text-base text-gray-600 font-medium">Total Fixed Expenses:</span>
+                <span className="text-sm sm:text-base text-gray-600 font-medium">{t.totalExpenses}</span>
                 <span className="text-xl sm:text-2xl font-bold text-red-600">
                   €{totalExpenses.toFixed(2)}
                 </span>
@@ -322,7 +345,7 @@ const App: React.FC = () => {
               {totalIncome > 0 && (
                 <div className="mt-2">
                   <div className="flex justify-between text-sm text-gray-500 mb-1">
-                    <span>Percentage of total income</span>
+                    <span>{t.percentageLabel}</span>
                     <span>{expensePercentage.toFixed(1)}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -343,7 +366,7 @@ const App: React.FC = () => {
               <div className="flex items-center gap-2 sm:gap-3 mb-2">
                 <TrendingUp className={`w-5 h-5 sm:w-6 sm:h-6 ${availableMoney >= 0 ? 'text-green-600' : 'text-red-600'}`} />
                 <span className="text-gray-700 font-semibold text-sm sm:text-base md:text-lg">
-                  Available Money (unallocated):
+                  {t.availableMoney}
                 </span>
               </div>
               <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${availableMoney >= 0 ? 'text-green-700' : 'text-red-700'}`}>
@@ -354,17 +377,17 @@ const App: React.FC = () => {
                 <div className="mt-4 pt-4 border-t border-gray-300">
                   {availableMoney >= 0 ? (
                     <div className="space-y-2 text-sm text-gray-600">
-                      <p className="font-medium text-gray-700">💡 Suggestions:</p>
-                      <p>• Consider saving 20% (€{(availableMoney * 0.2).toFixed(2)})</p>
-                      <p>• Create an emergency fund if you don't have one</p>
-                      <p>• €{(availableMoney * 0.8).toFixed(2)} remaining for discretionary spending</p>
+                      <p className="font-medium text-gray-700">{t.suggestions}</p>
+                      <p>• {t.suggestSaving} (€{(availableMoney * 0.2).toFixed(2)})</p>
+                      <p>• {t.suggestEmergency}</p>
+                      <p>• €{(availableMoney * 0.8).toFixed(2)} {t.suggestRemaining}</p>
                     </div>
                   ) : (
                     <div className="flex items-start gap-2 text-sm text-red-700">
                       <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
                       <div>
-                        <p className="font-semibold">Warning: your expenses exceed your income!</p>
-                        <p className="mt-1">You need to reduce expenses by €{Math.abs(availableMoney).toFixed(2)} or increase income.</p>
+                        <p className="font-semibold">{t.warning}</p>
+                        <p className="mt-1">{t.warningMessage} €{Math.abs(availableMoney).toFixed(2)}.</p>
                       </div>
                     </div>
                   )}
@@ -375,11 +398,11 @@ const App: React.FC = () => {
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 text-xs sm:text-sm text-gray-600">
-          <h3 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">📊 Percentage Guide:</h3>
+          <h3 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">{t.guideTitle}</h3>
           <ul className="space-y-1">
-            <li>• <span className="text-green-600 font-medium">Up to 50%</span> - Excellent expense management</li>
-            <li>• <span className="text-yellow-600 font-medium">50-70%</span> - Good management, but be careful</li>
-            <li>• <span className="text-red-600 font-medium">Over 70%</span> - Expenses too high, try to reduce them</li>
+            <li>• <span className="text-green-600 font-medium">50%</span> - {t.guideGood}</li>
+            <li>• <span className="text-yellow-600 font-medium">50-70%</span> - {t.guideWarning}</li>
+            <li>• <span className="text-red-600 font-medium">70%+</span> - {t.guideBad}</li>
           </ul>
         </div>
       </div>

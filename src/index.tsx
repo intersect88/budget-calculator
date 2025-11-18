@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import Login from './Login';
 import { AuthProvider, useAuth } from './AuthContext';
+import { LanguageProvider } from './LanguageContext';
 
 const AppWrapper: React.FC = () => {
   const { user, isGuest, continueAsGuest } = useAuth();
@@ -21,8 +22,10 @@ if (!rootElement) throw new Error('Failed to find the root element');
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <AppWrapper />
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <AppWrapper />
+      </AuthProvider>
+    </LanguageProvider>
   </React.StrictMode>
 );

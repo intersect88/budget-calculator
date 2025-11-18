@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
+import { useLanguage } from './LanguageContext';
 import { Mail, Lock, LogIn, UserPlus, ArrowRight } from 'lucide-react';
 
 interface LoginProps {
@@ -13,6 +14,7 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const { login, signup, loginWithGoogle } = useAuth();
+  const { t } = useLanguage();
 
   const handleEmailAuth = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -47,19 +49,19 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
   const getErrorMessage = (code: string): string => {
     switch (code) {
       case 'auth/email-already-in-use':
-        return 'Email already in use';
+        return t.emailInUse;
       case 'auth/invalid-email':
-        return 'Invalid email';
+        return t.invalidEmail;
       case 'auth/user-not-found':
-        return 'User not found';
+        return t.userNotFound;
       case 'auth/wrong-password':
-        return 'Wrong password';
+        return t.wrongPassword;
       case 'auth/weak-password':
-        return 'Password too weak (minimum 6 characters)';
+        return t.weakPassword;
       case 'auth/popup-closed-by-user':
-        return 'Login cancelled';
+        return t.loginCancelled;
       default:
-        return 'Authentication error';
+        return t.authError;
     }
   };
 
@@ -71,10 +73,10 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
             <LogIn className="w-8 h-8 text-indigo-600" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
-            {isSignup ? 'Sign Up' : 'Sign In'}
+            {isSignup ? t.signUp : t.signIn}
           </h1>
           <p className="text-sm sm:text-base text-gray-600">
-            Manage your personal budget
+            {t.manageYourBudget}
           </p>
         </div>
 
@@ -87,7 +89,7 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
         <form onSubmit={handleEmailAuth} className="space-y-4 mb-6">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Email
+              {t.email}
             </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -104,7 +106,7 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Password
+              {t.password}
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -126,11 +128,11 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
             className="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
-              'Loading...'
+              t.loading
             ) : (
               <>
                 {isSignup ? <UserPlus className="w-5 h-5" /> : <LogIn className="w-5 h-5" />}
-                {isSignup ? 'Sign Up' : 'Sign In'}
+                {isSignup ? t.signUp : t.signIn}
               </>
             )}
           </button>
@@ -141,7 +143,7 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">or</span>
+            <span className="px-2 bg-white text-gray-500">{t.or}</span>
           </div>
         </div>
 
@@ -168,7 +170,7 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          Continue with Google
+          {t.continueWithGoogle}
         </button>
 
         <div className="mt-6 text-center space-y-3">
@@ -177,8 +179,8 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
             className="text-indigo-600 hover:text-indigo-700 font-medium text-sm block w-full"
           >
             {isSignup
-              ? 'Already have an account? Sign In'
-              : 'Don\'t have an account? Sign Up'}
+              ? t.alreadyHaveAccount
+              : t.dontHaveAccount}
           </button>
           
           <div className="relative">
@@ -186,7 +188,7 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
               <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">or</span>
+              <span className="px-2 bg-white text-gray-500">{t.or}</span>
             </div>
           </div>
 
@@ -194,12 +196,12 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
             onClick={onSkip}
             className="flex items-center justify-center gap-2 w-full py-3 text-gray-600 hover:text-gray-800 font-medium text-sm transition"
           >
-            Continue without account
+            {t.continueWithoutAccount}
             <ArrowRight className="w-4 h-4" />
           </button>
           
           <p className="text-xs text-gray-500 mt-2">
-            Data will be saved only on this browser
+            {t.dataSavedLocally}
           </p>
         </div>
       </div>
