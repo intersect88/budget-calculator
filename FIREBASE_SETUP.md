@@ -1,37 +1,37 @@
-# Configurazione Firebase per Budget Calculator
+# Firebase Configuration for Budget Calculator
 
-## 📋 Passi per Configurare Firebase
+## 📋 Steps to Configure Firebase
 
-### 1. Crea un Progetto Firebase
-1. Vai su [Firebase Console](https://console.firebase.google.com/)
-2. Clicca su "Aggiungi progetto" o "Add project"
-3. Inserisci un nome per il progetto (es: "budget-calculator")
-4. Segui i passaggi guidati
+### 1. Create a Firebase Project
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Click on "Add project"
+3. Enter a project name (e.g., "budget-calculator")
+4. Follow the guided steps
 
-### 2. Aggiungi un'App Web
-1. Nel dashboard del progetto, clicca sull'icona Web `</>`
-2. Registra l'app con un nickname (es: "Budget Calculator Web")
-3. Copia la configurazione Firebase che appare
+### 2. Add a Web App
+1. In the project dashboard, click on the Web icon `</>`
+2. Register the app with a nickname (e.g., "Budget Calculator Web")
+3. Copy the Firebase configuration that appears
 
-### 3. Abilita l'Autenticazione
-1. Nel menu laterale, vai su "Authentication"
-2. Clicca su "Get started" o "Inizia"
-3. Nella tab "Sign-in method":
-   - Abilita **Email/Password**
-   - Abilita **Google** (aggiungi email di supporto quando richiesto)
+### 3. Enable Authentication
+1. In the side menu, go to "Authentication"
+2. Click on "Get started"
+3. In the "Sign-in method" tab:
+   - Enable **Email/Password**
+   - Enable **Google** (add support email when requested)
 
-### 4. Configura Firestore (Opzionale per sincronizzazione cloud)
-1. Nel menu laterale, vai su "Firestore Database"
-2. Clicca "Crea database"
-3. Scegli "Inizia in modalità test" (per sviluppo)
-4. Seleziona una località per il database
+### 4. Configure Firestore (Optional for cloud sync)
+1. In the side menu, go to "Firestore Database"
+2. Click "Create database"
+3. Choose "Start in test mode" (for development)
+4. Select a location for the database
 
-### 5. Aggiorna il File di Configurazione
-Copia la tua configurazione Firebase e incollala in `src/firebase.js`:
+### 5. Update Configuration File
+Copy your Firebase configuration and paste it into `src/firebase.js`:
 
 ```javascript
 const firebaseConfig = {
-  apiKey: "AIza...",  // La tua API key
+  apiKey: "AIza...",  // Your API key
   authDomain: "budget-calculator-xxxxx.firebaseapp.com",
   projectId: "budget-calculator-xxxxx",
   storageBucket: "budget-calculator-xxxxx.appspot.com",
@@ -40,34 +40,34 @@ const firebaseConfig = {
 };
 ```
 
-### 6. Configura il Dominio Autorizzato
+### 6. Configure Authorized Domain
 1. In Firebase Console > Authentication > Settings
-2. Nella sezione "Authorized domains"
-3. Aggiungi `localhost` se non è già presente (dovrebbe esserci di default)
+2. In the "Authorized domains" section
+3. Add `localhost` if not already present (should be there by default)
 
-## 🚀 Avvio dell'Applicazione
+## 🚀 Starting the Application
 
 ```bash
 npm start
 ```
 
-## 🔐 Funzionalità di Autenticazione
+## 🔐 Authentication Features
 
-- ✅ Registrazione con email/password
-- ✅ Login con email/password
-- ✅ Login con Google
+- ✅ Registration with email/password
+- ✅ Login with email/password
+- ✅ Login with Google
 - ✅ Logout
-- ✅ Gestione errori in italiano
-- ✅ Sessione persistente
+- ✅ Error handling in English
+- ✅ Persistent session
 
-## 📝 Note Importanti
+## 📝 Important Notes
 
-- I dati sono attualmente salvati in **localStorage** (locale al browser)
-- Per sincronizzare i dati tra dispositivi, sarà necessario implementare Firestore
-- La configurazione Firebase NON deve essere committata in repository pubblici
-- Considera di usare variabili d'ambiente (`.env`) per la configurazione in produzione
+- Data is currently saved in **localStorage** (local to the browser)
+- To sync data across devices, you'll need to implement Firestore
+- Firebase configuration should NOT be committed to public repositories
+- Consider using environment variables (`.env`) for configuration in production
 
-## 🛡️ Regole di Sicurezza Firestore (se implementi il database)
+## 🛡️ Firestore Security Rules (if you implement the database)
 
 ```javascript
 rules_version = '2';

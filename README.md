@@ -1,59 +1,59 @@
 # Budget Calculator
 
-Applicazione React per la gestione del budget mensile personale.
+React application for personal monthly budget management.
 
-## 🚀 Installazione
+## 🚀 Installation
 
 ```bash
-# Installa le dipendenze
+# Install dependencies
 npm install
 
-# Avvia il server di sviluppo
+# Start development server
 npm start
 ```
 
-L'app si aprirà automaticamente su `http://localhost:3000`
+The app will automatically open at `http://localhost:3000`
 
-## 📦 Build per Produzione
+## 📦 Production Build
 
 ```bash
 npm run build
 ```
 
-Questo creerà una cartella `build/` con i file ottimizzati pronti per il deploy.
+This will create a `build/` folder with optimized files ready for deployment.
 
-## 🛠️ Tecnologie Utilizzate
+## 🛠️ Technologies Used
 
-- **React 18** - Framework UI
+- **React 18** - UI Framework
 - **Tailwind CSS** - Styling
-- **lucide-react** - Icone
-- **Create React App** - Setup del progetto
+- **lucide-react** - Icons
+- **Create React App** - Project Setup
 
-## 📋 Funzionalità
+## 📋 Features
 
-- ✅ Inserimento stipendio netto mensile
-- ✅ Gestione spese fisse mensili (aggiungi/rimuovi)
-- ✅ Calcolo automatico del denaro disponibile
-- ✅ Visualizzazione percentuale spese
-- ✅ Suggerimenti per il risparmio
-- ✅ Alert per spese eccessive
+- ✅ Monthly net salary input
+- ✅ Fixed monthly expenses management (add/remove)
+- ✅ Automatic calculation of available money
+- ✅ Expense percentage visualization
+- ✅ Savings suggestions
+- ✅ Alerts for excessive expenses
 
 ## 🔧 Troubleshooting
 
-**Errore Tailwind non funziona:**
-- Verifica che `tailwind.config.js` contenga il corretto path in `content`
-- Assicurati che `src/index.css` contenga le direttive `@tailwind`
+**Tailwind not working error:**
+- Verify that `tailwind.config.js` contains the correct path in `content`
+- Make sure `src/index.css` contains the `@tailwind` directives
 
-**Errore lucide-react:**
+**lucide-react error:**
 ```bash
 npm install lucide-react --force
 ```
 
-**Porta 3000 occupata:**
+**Port 3000 occupied:**
 ```bash
 PORT=3001 npm start
 ```
 
-## 📄 Licenza
+## 📄 License
 
-Questo progetto è privato e non è disponibile per uso pubblico.
+This project is private and not available for public use.

@@ -2,11 +2,11 @@ import { initializeApp, FirebaseApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, Auth } from 'firebase/auth';
 import { getFirestore, Firestore } from 'firebase/firestore';
 
-// TODO: Sostituisci con la tua configurazione Firebase
-// Vai su https://console.firebase.google.com/
-// 1. Crea un nuovo progetto
-// 2. Aggiungi un'app web
-// 3. Copia la configurazione qui sotto
+// TODO: Replace with your Firebase configuration
+// Go to https://console.firebase.google.com/
+// 1. Create a new project
+// 2. Add a web app
+// 3. Copy the configuration below
 
 interface FirebaseConfig {
   apiKey: string;
@@ -26,10 +26,10 @@ const firebaseConfig: FirebaseConfig = {
   appId: "YOUR_APP_ID"
 };
 
-// Inizializza Firebase
+// Initialize Firebase
 const app: FirebaseApp = initializeApp(firebaseConfig);
 
-// Inizializza servizi
+// Initialize services
 export const auth: Auth = getAuth(app);
 export const googleProvider: GoogleAuthProvider = new GoogleAuthProvider();
 export const db: Firestore = getFirestore(app);
