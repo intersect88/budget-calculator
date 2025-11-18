@@ -14,7 +14,7 @@ interface Income {
   amount: string;
 }
 
-// Funzioni helper per localStorage
+// localStorage helper functions
 const loadFromStorage = <T,>(key: string, defaultValue: T): T => {
   try {
     const saved = localStorage.getItem(key);
@@ -37,21 +37,21 @@ const App: React.FC = () => {
   const { user, isGuest, logout, exitGuestMode } = useAuth();
   const [netSalary, setNetSalary] = useState<string>(() => loadFromStorage<string>('netSalary', ''));
   const [expenses, setExpenses] = useState<Expense[]>(() => loadFromStorage<Expense[]>('expenses', [
-    { id: 1, category: 'Affitto/Mutuo', amount: '' },
-    { id: 2, category: 'Bollette', amount: '' },
-    { id: 3, category: 'Trasporti', amount: '' },
-    { id: 4, category: 'Spesa alimentare', amount: '' }
+    { id: 1, category: 'Rent/Mortgage', amount: '' },
+    { id: 2, category: 'Utilities', amount: '' },
+    { id: 3, category: 'Transportation', amount: '' },
+    { id: 4, category: 'Groceries', amount: '' }
   ]));
   const [incomes, setIncomes] = useState<Income[]>(() => loadFromStorage<Income[]>('incomes', [
     { id: 1, category: 'Freelance', amount: '' },
-    { id: 2, category: 'Affitti', amount: '' }
+    { id: 2, category: 'Rental Income', amount: '' }
   ]));
 
   const handleLogout = async (): Promise<void> => {
     try {
       await logout();
     } catch (error) {
-      console.error('Errore durante il logout:', error);
+      console.error('Logout error:', error);
     }
   };
 
@@ -59,7 +59,7 @@ const App: React.FC = () => {
     exitGuestMode();
   };
 
-  // Salva automaticamente quando cambiano i dati
+  // Auto-save when data changes
   useEffect(() => {
     saveToStorage('netSalary', netSalary);
   }, [netSalary]);
@@ -147,17 +147,17 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-4xl mx-auto">
-        {/* Banner per utenti guest */}
+        {/* Guest user banner */}
         {isGuest && (
           <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4 mb-6 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0" />
               <div>
                 <p className="text-sm font-semibold text-yellow-900">
-                  Stai usando la modalità ospite
+                  You're using guest mode
                 </p>
                 <p className="text-xs text-yellow-700">
-                  I tuoi dati sono salvati solo su questo browser. Crea un account per sincronizzarli su tutti i tuoi dispositivi.
+                  Your data is only saved on this browser. Create an account to sync across all your devices.
                 </p>
               </div>
             </div>
@@ -166,7 +166,7 @@ const App: React.FC = () => {
               className="flex items-center gap-2 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition whitespace-nowrap flex-shrink-0"
             >
               <UserPlus className="w-4 h-4" />
-              Crea Account
+              Create Account
             </button>
           </div>
         )}
@@ -175,50 +175,50 @@ const App: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <Wallet className="w-8 h-8 text-indigo-600" />
-              <h1 className="text-3xl font-bold text-gray-800">Gestione Budget Mensile</h1>
+              <h1 className="text-3xl font-bold text-gray-800">Monthly Budget Manager</h1>
             </div>
             <div className="flex items-center gap-4">
               {!isGuest && (
                 <div className="text-right">
-                  <p className="text-sm text-gray-600">Benvenuto</p>
+                  <p className="text-sm text-gray-600">Welcome</p>
                   <p className="text-sm font-semibold text-gray-800">{user?.email}</p>
                 </div>
               )}
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
-                title={isGuest ? "Esci dalla modalità ospite" : "Esci"}
+                title={isGuest ? "Exit guest mode" : "Logout"}
               >
                 <LogOut className="w-4 h-4" />
-                Esci
+                Logout
               </button>
             </div>
           </div>
 
-          {/* Stipendio Netto */}
+          {/* Net Salary */}
           <div className="mb-8 p-6 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Stipendio Netto Mensile (€)
+              Monthly Net Salary (€)
             </label>
             <input
               type="number"
               value={netSalary}
               onChange={(e) => setNetSalary(e.target.value)}
-              placeholder="Es: 1500"
+              placeholder="e.g., 1500"
               className="w-full px-4 py-3 text-lg border-2 border-indigo-200 rounded-lg focus:outline-none focus:border-indigo-500 transition"
             />
           </div>
 
-          {/* Spese Fisse */}
+          {/* Fixed Expenses */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-800">Spese Fisse Mensili</h2>
+              <h2 className="text-xl font-bold text-gray-800">Fixed Monthly Expenses</h2>
               <button
                 onClick={addExpense}
                 className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
               >
                 <Plus className="w-4 h-4" />
-                Aggiungi Spesa
+                Add Expense
               </button>
             </div>
 
@@ -229,7 +229,7 @@ const App: React.FC = () => {
                     type="text"
                     value={expense.category}
                     onChange={(e) => updateExpense(expense.id, 'category', e.target.value)}
-                    placeholder="Categoria (es: Netflix)"
+                    placeholder="Category (e.g., Netflix)"
                     className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-400 transition"
                   />
                   <input
@@ -250,16 +250,16 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Entrate Aggiuntive */}
+          {/* Additional Income */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-800">Entrate Aggiuntive</h2>
+              <h2 className="text-xl font-bold text-gray-800">Additional Income</h2>
               <button
                 onClick={addIncome}
                 className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
               >
                 <PiggyBank className="w-4 h-4" />
-                Aggiungi Entrata
+                Add Income
               </button>
             </div>
 
@@ -270,7 +270,7 @@ const App: React.FC = () => {
                     type="text"
                     value={income.category}
                     onChange={(e) => updateIncome(income.id, 'category', e.target.value)}
-                    placeholder="Categoria (es: Freelance)"
+                    placeholder="Category (e.g., Freelance)"
                     className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-400 transition"
                   />
                   <input
@@ -291,26 +291,26 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Riepilogo */}
+          {/* Summary */}
           <div className="mt-8 space-y-4">
             <div className="p-6 bg-green-50 rounded-xl border-2 border-green-200">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-600 font-medium">Totale Entrate:</span>
+                <span className="text-gray-600 font-medium">Total Income:</span>
                 <span className="text-2xl font-bold text-green-600">
                   €{totalIncome.toFixed(2)}
                 </span>
               </div>
               {totalIncomes > 0 && (
                 <div className="mt-2 text-sm text-gray-600">
-                  <p>Stipendio: €{netSalaryValue.toFixed(2)}</p>
-                  <p>Entrate aggiuntive: €{totalIncomes.toFixed(2)}</p>
+                  <p>Salary: €{netSalaryValue.toFixed(2)}</p>
+                  <p>Additional income: €{totalIncomes.toFixed(2)}</p>
                 </div>
               )}
             </div>
 
             <div className="p-6 bg-gray-50 rounded-xl">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-600 font-medium">Totale Spese Fisse:</span>
+                <span className="text-gray-600 font-medium">Total Fixed Expenses:</span>
                 <span className="text-2xl font-bold text-red-600">
                   €{totalExpenses.toFixed(2)}
                 </span>
@@ -318,7 +318,7 @@ const App: React.FC = () => {
               {totalIncome > 0 && (
                 <div className="mt-2">
                   <div className="flex justify-between text-sm text-gray-500 mb-1">
-                    <span>Percentuale sulle entrate totali</span>
+                    <span>Percentage of total income</span>
                     <span>{expensePercentage.toFixed(1)}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -339,7 +339,7 @@ const App: React.FC = () => {
               <div className="flex items-center gap-3 mb-2">
                 <TrendingUp className={`w-6 h-6 ${availableMoney >= 0 ? 'text-green-600' : 'text-red-600'}`} />
                 <span className="text-gray-700 font-semibold text-lg">
-                  Denaro Disponibile (non vincolato):
+                  Available Money (unallocated):
                 </span>
               </div>
               <div className={`text-4xl font-bold ${availableMoney >= 0 ? 'text-green-700' : 'text-red-700'}`}>
@@ -350,17 +350,17 @@ const App: React.FC = () => {
                 <div className="mt-4 pt-4 border-t border-gray-300">
                   {availableMoney >= 0 ? (
                     <div className="space-y-2 text-sm text-gray-600">
-                      <p className="font-medium text-gray-700">💡 Suggerimenti:</p>
-                      <p>• Considera di risparmiare il 20% (€{(availableMoney * 0.2).toFixed(2)})</p>
-                      <p>• Crea un fondo emergenze se non ce l'hai già</p>
-                      <p>• Rimangono €{(availableMoney * 0.8).toFixed(2)} per spese discrezionali</p>
+                      <p className="font-medium text-gray-700">💡 Suggestions:</p>
+                      <p>• Consider saving 20% (€{(availableMoney * 0.2).toFixed(2)})</p>
+                      <p>• Create an emergency fund if you don't have one</p>
+                      <p>• €{(availableMoney * 0.8).toFixed(2)} remaining for discretionary spending</p>
                     </div>
                   ) : (
                     <div className="flex items-start gap-2 text-sm text-red-700">
                       <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
                       <div>
-                        <p className="font-semibold">Attenzione: le tue spese superano le entrate!</p>
-                        <p className="mt-1">Devi ridurre le spese di €{Math.abs(availableMoney).toFixed(2)} o aumentare le entrate.</p>
+                        <p className="font-semibold">Warning: your expenses exceed your income!</p>
+                        <p className="mt-1">You need to reduce expenses by €{Math.abs(availableMoney).toFixed(2)} or increase income.</p>
                       </div>
                     </div>
                   )}
@@ -371,11 +371,11 @@ const App: React.FC = () => {
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-6 text-sm text-gray-600">
-          <h3 className="font-semibold text-gray-800 mb-2">📊 Guida alle percentuali:</h3>
+          <h3 className="font-semibold text-gray-800 mb-2">📊 Percentage Guide:</h3>
           <ul className="space-y-1">
-            <li>• <span className="text-green-600 font-medium">Fino al 50%</span> - Ottima gestione delle spese</li>
-            <li>• <span className="text-yellow-600 font-medium">50-70%</span> - Buona gestione, ma attenzione</li>
-            <li>• <span className="text-red-600 font-medium">Oltre 70%</span> - Spese troppo alte, cerca di ridurle</li>
+            <li>• <span className="text-green-600 font-medium">Up to 50%</span> - Excellent expense management</li>
+            <li>• <span className="text-yellow-600 font-medium">50-70%</span> - Good management, but be careful</li>
+            <li>• <span className="text-red-600 font-medium">Over 70%</span> - Expenses too high, try to reduce them</li>
           </ul>
         </div>
       </div>

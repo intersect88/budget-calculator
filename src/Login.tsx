@@ -47,19 +47,19 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
   const getErrorMessage = (code: string): string => {
     switch (code) {
       case 'auth/email-already-in-use':
-        return 'Email già in uso';
+        return 'Email already in use';
       case 'auth/invalid-email':
-        return 'Email non valida';
+        return 'Invalid email';
       case 'auth/user-not-found':
-        return 'Utente non trovato';
+        return 'User not found';
       case 'auth/wrong-password':
-        return 'Password errata';
+        return 'Wrong password';
       case 'auth/weak-password':
-        return 'Password troppo debole (minimo 6 caratteri)';
+        return 'Password too weak (minimum 6 characters)';
       case 'auth/popup-closed-by-user':
-        return 'Login annullato';
+        return 'Login cancelled';
       default:
-        return 'Errore durante l\'autenticazione';
+        return 'Authentication error';
     }
   };
 
@@ -71,10 +71,10 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
             <LogIn className="w-8 h-8 text-indigo-600" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            {isSignup ? 'Registrati' : 'Accedi'}
+            {isSignup ? 'Sign Up' : 'Sign In'}
           </h1>
           <p className="text-gray-600">
-            Gestisci il tuo budget personale
+            Manage your personal budget
           </p>
         </div>
 
@@ -95,7 +95,7 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="tua@email.com"
+                placeholder="your@email.com"
                 required
                 className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 transition"
               />
@@ -126,11 +126,11 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
             className="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
-              'Caricamento...'
+              'Loading...'
             ) : (
               <>
                 {isSignup ? <UserPlus className="w-5 h-5" /> : <LogIn className="w-5 h-5" />}
-                {isSignup ? 'Registrati' : 'Accedi'}
+                {isSignup ? 'Sign Up' : 'Sign In'}
               </>
             )}
           </button>
@@ -141,7 +141,7 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">oppure</span>
+            <span className="px-2 bg-white text-gray-500">or</span>
           </div>
         </div>
 
@@ -168,7 +168,7 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          Continua con Google
+          Continue with Google
         </button>
 
         <div className="mt-6 text-center space-y-3">
@@ -177,8 +177,8 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
             className="text-indigo-600 hover:text-indigo-700 font-medium text-sm block w-full"
           >
             {isSignup
-              ? 'Hai già un account? Accedi'
-              : 'Non hai un account? Registrati'}
+              ? 'Already have an account? Sign In'
+              : 'Don\'t have an account? Sign Up'}
           </button>
           
           <div className="relative">
@@ -186,7 +186,7 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
               <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">oppure</span>
+              <span className="px-2 bg-white text-gray-500">or</span>
             </div>
           </div>
 
@@ -194,12 +194,12 @@ const Login: React.FC<LoginProps> = ({ onSkip }) => {
             onClick={onSkip}
             className="flex items-center justify-center gap-2 w-full py-3 text-gray-600 hover:text-gray-800 font-medium text-sm transition"
           >
-            Continua senza account
+            Continue without account
             <ArrowRight className="w-4 h-4" />
           </button>
           
           <p className="text-xs text-gray-500 mt-2">
-            I dati saranno salvati solo su questo browser
+            Data will be saved only on this browser
           </p>
         </div>
       </div>
